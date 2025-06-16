@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tierfreund Hauptspiel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker registriert'))
+        .catch(err => console.log('Service Worker Fehler:', err));
+    }
+  </script>
+</head>
+<body>
+  <h1>🐾 Mein Tierfreund</h1>
+  <div id="pet">🐶</div>
+  <div class="status" id="status">Laune: 😊 | Hunger: 😋 | Energie: ⚡⚡</div>
+  <button onclick="feedPet()">🍎 Füttern</button>
+  <button onclick="playWithPet()">🎾 Spielen</button>
+  <button onclick="sleepPet()">😴 Schlafen</button>
+  <button onclick="location.href='minispiele.html'">🎮 Minispiele</button>
+
+  <div class="collection">
+    <h2>📦 Sammlung</h2>
+    <span id="slot-dog">🐶</span>
+    <span id="slot-cat">🐱</span>
+    <span id="slot-rabbit">🐰</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

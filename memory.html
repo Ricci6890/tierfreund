@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tier-Memory</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      text-align: center;
+      font-family: Comic Sans MS, sans-serif;
+    }
+    #game {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      grid-gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .card {
+      width: 80px;
+      height: 80px;
+      font-size: 50px;
+      background-color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .flipped {
+      background-color: #ff80ab;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 Tier-Memory</h1>
+  <p>Klicke auf zwei Karten und finde Paare!</p>
+  <div id="game"></div>
+  <p id="message"></p>
+  <button onclick="location.href='minispiele.html'">⬅️ Zurück</button>
+
+  <script>
+    const animals = ['🐶','🐱','🐰','🐹','🦊','🐻','🐸','🐵'];
+    let cards = [];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matches = 0;
+    const game = document.getElementById('game');
+    const message = document.getElementById('message');
+
+    function shuffle(array) {
+      for(let i = array.length -1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function setup() {
+      cards = shuffle(animals.concat(animals)); // Paare verdoppeln
+      game.innerHTML = '';
+      cards.forEach((animal, i) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.animal = animal;
+        card.innerText = '';
+        card.onclick = () => flipCard(card);
+        game.appendChild(card);
+      });
+      matches = 0;
+      message.textContent = '';
+    }
+
+    function flipCard(card) {
+      if(lockBoard) return;
+      if(card === firstCard) return;
+
+      card.innerText = card.dataset.animal;
+      card.classList.add('flipped');
+
+      if(!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      secondCard = card;
+      lockBoard = true;
+
+      if(firstCard.dataset.animal === secondCard.dataset.animal) {
+        matches++;
+        resetTurn();
+        if(matches === animals.length) {
+          message.textContent = '🎉 Glückwunsch, du hast alle Paare gefunden!';
+        }
+      } else {
+        setTimeout(() => {
+          firstCard.innerText = '';
+          secondCard.innerText = '';
+          firstCard.classList.remove('flipped');
+          secondCard.classList.remove('flipped');
+          resetTurn();
+        }, 1000);
+      }
+    }
+
+    function resetTurn() {
+      [firstCard, secondCard] = [null, null];
+      lockBoard = false;
+    }
+
+    setup();
+  </script>
+</body>
+</html>

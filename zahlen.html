@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zahlen-Spiel</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      text-align: center;
+      font-family: Comic Sans MS, sans-serif;
+    }
+    #task {
+      font-size: 36px;
+      margin: 20px;
+    }
+    .option {
+      font-size: 24px;
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #ff80ab;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+    }
+    .option:hover {
+      background-color: #ec407a;
+    }
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔢 Zahlen-Spiel</h1>
+  <div id="task"></div>
+  <div id="options"></div>
+  <div id="message"></div>
+  <button onclick="location.href='minispiele.html'">⬅️ Zurück</button>
+
+  <script>
+    const taskEl = document.getElementById('task');
+    const optionsEl = document.getElementById('options');
+    const messageEl = document.getElementById('message');
+
+    let correctAnswer = null;
+
+    function newTask() {
+      optionsEl.innerHTML = '';
+      messageEl.textContent = '';
+
+      const a = Math.floor(Math.random() * 5) + 1;
+      const b = Math.floor(Math.random() * 5) + 1;
+      correctAnswer = a + b;
+      taskEl.textContent = `Was ist ${a} + ${b}?`;
+
+      let answers = [correctAnswer];
+      while (answers.length < 4) {
+        let wrong = Math.floor(Math.random() * 10) + 1;
+        if (!answers.includes(wrong)) answers.push(wrong);
+      }
+      answers = answers.sort(() => Math.random() - 0.5);
+
+      answers.forEach(ans => {
+        const btn = document.createElement('div');
+        btn.className = 'option';
+        btn.textContent = ans;
+        btn.onclick = () => checkAnswer(ans);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(answer) {
+      if(answer === correctAnswer) {
+        messageEl.textContent = '👍 Richtig!';
+        setTimeout(newTask, 1500);
+      } else {
+        messageEl.textContent = '👎 Versuch es nochmal!';
+      }
+    }
+
+    newTask();
+  </script>
+</body>
+</html>

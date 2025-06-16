@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ballonspiel</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #game {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      overflow: hidden;
+      background-color: #e3f2fd;
+      margin-bottom: 10px;
+    }
+    .balloon {
+      position: absolute;
+      font-size: 60px;
+      cursor: pointer;
+      animation: float 5s linear forwards;
+    }
+    @keyframes float {
+      0% { bottom: 0; }
+      100% { bottom: 100vh; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎈 Ballonspiel</h1>
+  <p>Klicke auf so viele Ballons wie möglich!</p>
+  <div id="game"></div>
+  <p id="score">Punkte: 0</p>
+  <button onclick="location.href='minispiele.html'">⬅️ Zurück</button>
+
+  <script>
+    const game = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+    let score = 0;
+
+    function spawnBalloon() {
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.left = Math.random() * 90 + 'vw';
+      balloon.innerText = '🎈';
+
+      balloon.onclick = () => {
+        score++;
+        scoreEl.textContent = 'Punkte: ' + score;
+        balloon.remove();
+      };
+
+      game.appendChild(balloon);
+
+      setTimeout(() => {
+        if (game.contains(balloon)) balloon.remove();
+      }, 5000);
+    }
+
+    setInterval(spawnBalloon, 1000);
+  </script>
+</body>
+</html>
